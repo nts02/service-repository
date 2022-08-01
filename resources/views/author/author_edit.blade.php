@@ -20,7 +20,7 @@
                 <input type="text" class="form-control" name="author_name" value="">
 
             </div>
-            <div class="form-group" style="margin-left: 10px">
+            <div class="form-group">
                 <input type="submit" class ="btn btn-primary " value="Update" style="margin-bottom: 15px;">
             </div>
 

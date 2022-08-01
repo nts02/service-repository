@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\StoreRepository;
+use Illuminate\Support\Facades\Validator;
 
 class StoreService
 {
@@ -13,13 +14,14 @@ class StoreService
         $this->storeRepository = $storeRepository;
     }
 
-    public function index()
+    public function getAll()
     {
         $text = \request()->search;
-        if($text!="") {
+        if ($text != "") {
             return $this->storeRepository->searchStore($text);
         }
-        return $this->storeRepository->getListStore();
+
+        return $this->storeRepository->getAllStore();
     }
 
     public function show($id)
@@ -29,17 +31,22 @@ class StoreService
 
     public function store(array $data)
     {
-        if($data['store_name'] != null AND $data['address'] != null){
+        $validator = Validator::make($data, [
+            'store_name' => 'required|max:50',
+            'address'    => 'required'
+        ]);
+
+        if ( ! $validator->fails()) {
             return $this->storeRepository->create($data);
         }
 
         return false;
     }
 
-    public function update(array $data,$id)
+    public function update(array $data, $id)
     {
-        if($data['store_name']!=null AND $data['address']!=null){
-            return $this->storeRepository->update($data,$id);
+        if ($data['store_name'] != null and $data['address'] != null) {
+            return $this->storeRepository->update($data, $id);
         }
 
         return false;
@@ -49,4 +56,5 @@ class StoreService
     {
         return $this->storeRepository->delete($id);
     }
+
 }

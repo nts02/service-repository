@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use App\Services\AuthorService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
 {
-
     public $authorService;
 
     public function __construct(AuthorService $authorService)
@@ -23,7 +23,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $list_author = $this->authorService->index();
+        $list_author = $this->authorService->getAll();
+
         return view('author.index', compact('list_author'));
     }
 
@@ -49,7 +50,7 @@ class AuthorController extends Controller
         $this->authorService->store($request->all());
 
         $notification = [
-            'message'    => 'Add Author Successfully',
+            'message'    => __('message.create', ['attribute' => 'Author']),
             'alert-type' => 'success',
         ];
 
@@ -97,7 +98,7 @@ class AuthorController extends Controller
         $result = $this->authorService->update($request->all(), $request->id);
         if ( ! $result) {
             $notification = [
-                'message'    => 'Update Author Failed',
+                'message'    => __('message.update_fail', ['attribute' => 'Author']),
                 'alert-type' => 'error',
             ];
 
@@ -105,7 +106,7 @@ class AuthorController extends Controller
         }
 
         $notification = [
-            'message'    => 'Update Author Successfully',
+            'message'    => __('message.update', ['attribute' => 'Author']),
             'alert-type' => 'success',
         ];
 
@@ -121,14 +122,11 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        //xoá những đối tượng book liên quan tới tác giả($id) chuẩn bị xoá
-        $author = $this->authorService->show($id);
-        $author->books()->delete();
 
         $this->authorService->delete($id);
 
         $notification = [
-            'message'    => 'Deleted Author Successfully',
+            'message'    => __('message.destroy', ['attribute' => 'Author']),
             'alert-type' => 'warning',
         ];
 

@@ -28,8 +28,8 @@
                 <div class="col-md-4 mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Category <span class="text-danger">*</span></label>
                     <select class="form-select" aria-label="Default select example"  name="category_id">
-                        <option value="{{ $category_info->id }}"  selected=>
-                            {{ $category_info->category_name }}
+                        <option value="{{ $book->category->id }}"  selected=>
+                            {{ $book->category->category_name }}
                         </option>
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->category_name }}</option>
@@ -39,8 +39,8 @@
                 <div class="col-md-4 mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Author <span class="text-danger">*</span></label>
                     <select class="form-select" aria-label="Default select example" name="author_id">
-                        <option value="{{$author_info->id}}"  selected>
-                            {{$author_info->author_name}}
+                        <option value="{{$book->author->id}}"  selected>
+                            {{$book->author->author_name}}
                         </option>
                         @foreach($authors as $author)
                             <option value="{{$author->id}}">{{$author->author_name }}</option>
@@ -52,7 +52,7 @@
                     <label for="exampleFormControlInput1" class="form-label">Store <span class="text-danger">*</span></label>
                     <select class="form-select" multiple="multiple"  name="store_id[]" id="store_id[]">
                         @foreach($stores as $store)
-                        <option value="{{$store->id}}" {{ in_array($store->id,$array) ? 'selected' : '' }}>
+                        <option value="{{$store->id}}" {{ in_array($store->id,$listStores) ? 'selected' : '' }}>
                             {{ $store->store_name }}
                         </option>
                         @endforeach

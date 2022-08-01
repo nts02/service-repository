@@ -21,12 +21,14 @@ class CategoryRepository extends BaseRepository
     public function getAllCategory()
     {
         $result = $this->index();
+
         return $result;
     }
 
     public function searchCategory($text)
     {
-        $result = Category::where('category_name','LIKE','%'.$text.'%')->get();
+        $result = Category::where('category_name', 'LIKE', '%' . $text . '%')->get();
+
         return $result;
     }
 }

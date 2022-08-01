@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Book;
+use App\Models\BookStore;
 use Illuminate\Support\Facades\DB;
 
 class BookRepository extends BaseRepository
@@ -29,9 +30,9 @@ class BookRepository extends BaseRepository
 
     public function getStoreArrayById($id)
     {
-        $store_array = DB::table('book_store')->select('store_id')->where('book_id', $id)->get();
+        $storeArray = DB::table('book_store')->select('store_id')->where('book_id', $id)->get();
 
-        return $store_array;
+        return $storeArray;
     }
 
     public function getLatestBook()
@@ -50,4 +51,5 @@ class BookRepository extends BaseRepository
 
         return $result;
     }
+
 }

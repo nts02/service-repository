@@ -23,9 +23,9 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $stores = $this->storeService->index();
+        $stores = $this->storeService->getAll();
 
-        return view('store.index',compact('stores'));
+        return view('store.index', compact('stores'));
     }
 
     /**
@@ -47,10 +47,10 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->storeService->store($request->all())) {
+        if ($this->storeService->store($request->all())) {
 
             $notification = [
-                'message'    => 'Add Store Successfully',
+                'message'    => __('message.create', ['attribute' => 'Store']),
                 'alert-type' => 'success',
             ];
 
@@ -76,7 +76,7 @@ class StoreController extends Controller
     {
         $store = $this->storeService->show($id);
 
-        return view('store.view',compact('store'));
+        return view('store.view', compact('store'));
     }
 
     /**
@@ -90,7 +90,7 @@ class StoreController extends Controller
     {
         $store = $this->storeService->show($id);
 
-        return view('store.store_edit',compact('store'));
+        return view('store.store_edit', compact('store'));
     }
 
     /**
@@ -105,9 +105,9 @@ class StoreController extends Controller
     {
         $result = $this->storeService->update($request->all(), $id);
 
-        if($result) {
+        if ($result) {
             $notification = [
-                'message'    => 'Update Store Successfully',
+                'message'    => __('message.update', ['attribute' => 'Store']),
                 'alert-type' => 'success',
             ];
 
@@ -115,7 +115,7 @@ class StoreController extends Controller
         }
 
         $notification = [
-            'message'    => 'Update Store Failed',
+            'message'    => __('message.update_fail', ['attribute' => 'Store']),
             'alert-type' => 'error',
         ];
 
@@ -134,7 +134,7 @@ class StoreController extends Controller
         $this->storeService->delete($id);
 
         $notification = [
-            'message'    => 'Delete Store Successfully',
+            'message'    => __('message.destroy', ['attribute' => 'Store']),
             'alert-type' => 'warning',
         ];
 

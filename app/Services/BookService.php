@@ -13,7 +13,7 @@ class BookService
         $this->bookRepository = $bookRepository;
     }
 
-    public function index()
+    public function getAll()
     {
         $text = \request()->search;
         if ($text != "") {
@@ -30,6 +30,9 @@ class BookService
 
     public function store(array $data)
     {
+        $result = $this->bookRepository->getLatestBook();
+        $result->stores()->attach($data['store_id[]']);
+
         unset($data['store_id']);
 
         return $this->bookRepository->create($data);
@@ -44,6 +47,8 @@ class BookService
             'category_id' => $data['category_id'],
             'description' => $data['description']
         ], $id);
+
+        $this->bookRepository->find($id)->stores()->sync($data['store_id']);
 
         return $result;
     }
@@ -63,10 +68,4 @@ class BookService
 
         return $array;
     }
-
-    public function getLatestBook()
-    {
-        return $this->bookRepository->getLatestBook();
-    }
-
 }

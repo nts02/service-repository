@@ -26,6 +26,11 @@ class AuthorRepository extends BaseRepository
         return $result;
     }
 
+    public function getAuthorById($id)
+    {
+        return Author::findOrFail($id);
+    }
+
     public function searchAuthor($text)
     {
         $result = Author::where('author_name','LIKE','%'.$text.'%')->get();

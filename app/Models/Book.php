@@ -25,4 +25,10 @@ class Book extends Model
     {
         return $this->belongsToMany(Store::class);
     }
+
+    public function bookStore()
+    {
+        return $this->hasMany(BookStore::class,'id','book_id');
+    }
+
 }

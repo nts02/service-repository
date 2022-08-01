@@ -6,7 +6,6 @@
 
 @section('content')
 
-
     <div class="container md mt-2 border border-dark" style="width:60%">
         <h3 class="mt-5" style="text-align: center;">Book Details</h3>
         <div class="row">

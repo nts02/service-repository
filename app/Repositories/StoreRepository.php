@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\BookStore;
 use App\Models\Store;
 
 class StoreRepository extends BaseRepository
@@ -18,7 +19,7 @@ class StoreRepository extends BaseRepository
         return Store::class;
     }
 
-    public function getListStore()
+    public function getAllStore()
     {
         return $this->index();
     }

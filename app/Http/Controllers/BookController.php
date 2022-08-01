@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\BookStore;
 use App\Services\AuthorService;
 use App\Services\BookService;
 use App\Services\CategoryService;
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
-
     protected $bookService;
     protected $categoryService;
     protected $authorService;
@@ -37,7 +37,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = $this->bookService->index();
+        $books = $this->bookService->getAll();
+
         return view('book.index', compact('books'));
     }
 
@@ -66,12 +67,8 @@ class BookController extends Controller
     {
         $this->bookService->store($request->all());
 
-        $result = $this->bookService->getLatestBook();
-
-        $result->stores()->attach($request->store_id);
-
         $notification = [
-            'message'    => 'Add Book Successfully',
+            'message'    => __('message.create', ['attribute' => 'Book']),
             'alert-type' => 'success',
         ];
 
@@ -101,17 +98,15 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book          = $this->bookService->show($id);
-        $author_info   = $book->author;
-        $category_info = $book->category;
-        $authors       = $this->authorService->index();
-        $categories    = $this->categoryService->index();
-        $stores        = $this->storeService->index();
+        $book       = $this->bookService->show($id);
+        $authors    = $this->authorService->getAll();
+        $categories = $this->categoryService->getAll();
+        $stores     = $this->storeService->getAll();
 
-        $array = $this->bookService->getStoreArray($id);
+        $listStores = $this->bookService->getStoreArray($id);
 
         return view('book.book_edit',
-            compact('book', 'authors', 'categories', 'stores', 'author_info', 'category_info', 'array'));
+            compact('book', 'authors', 'categories', 'stores', 'listStores'));
     }
 
     /**
@@ -126,11 +121,8 @@ class BookController extends Controller
     {
         $this->bookService->update($request->all(), $request->id);
 
-        $result = $this->bookService->show($request->id);
-        $result->stores()->sync($request->store_id);
-
         $notification = [
-            'message'    => 'Update Book Successfully',
+            'message'    => __('message.update', ['attribute' => 'Book']),
             'alert-type' => 'success',
         ];
 
@@ -149,7 +141,7 @@ class BookController extends Controller
         $this->bookService->delete($id);
 
         $notification = [
-            'message'    => 'Deleted Book Successfully',
+            'message'    => __('message.destroy', ['attribute' => 'Book']),
             'alert-type' => 'warning',
         ];
 

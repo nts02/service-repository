@@ -22,9 +22,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->categoryService->index();
+        $categories = $this->categoryService->getAll();
 
-        return view('category.index',compact('categories'));
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -41,14 +41,15 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        if($this->categoryService->store($request->all())) {
+        if ($this->categoryService->store($request->all())) {
 
             $notification = [
-                'message'    => 'Add Category Successfully',
+                'message'    => __('message.create', ['attribute' => 'Category']),
                 'alert-type' => 'success',
             ];
 
@@ -56,7 +57,7 @@ class CategoryController extends Controller
         }
 
         $notification = [
-            'message'    => 'Add Category Fail',
+            'message'    => __('message.create_fail', ['attribute' => 'Category']),
             'alert-type' => 'error',
         ];
 
@@ -67,6 +68,7 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Category  $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -80,13 +82,14 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Category  $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $category = $this->categoryService->show($id);
 
-        return view('category.category_edit',compact('category'));
+        return view('category.category_edit', compact('category'));
     }
 
     /**
@@ -94,15 +97,16 @@ class CategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Category  $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
         $result = $this->categoryService->update($request->all(), $request->id);
-        if(!$result) {
+        if ( ! $result) {
 
             $notification = [
-                'message'    => 'Add Category Fail',
+                'message'    => __('message.update_fail', ['attribute' => 'Category']),
                 'alert-type' => 'error',
             ];
 
@@ -110,7 +114,7 @@ class CategoryController extends Controller
         }
 
         $notification = [
-            'message'    => 'Add Category Successfully',
+            'message'    => __('message.update', ['attribute' => 'Category']),
             'alert-type' => 'success',
         ];
 
@@ -121,18 +125,15 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Category  $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //xoa cac doi tuong book lien quan toi category chuan bi xoa
-        $category = $this->categoryService->show($id);
-        $category->books()->delete();
-
         $this->categoryService->delete($id);
 
         $notification = [
-            'message'    => 'Deleted Author Successfully',
+            'message'    => __('message.destroy', ['attribute' => 'Category']),
             'alert-type' => 'warning',
         ];
 
